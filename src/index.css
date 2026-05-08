@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  body {
+    font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+    background-color: #0a0a0f;
+    color: #e5e7eb;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: rtl;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input, select, textarea {
+    font-family: 'Tajawal', system-ui, sans-serif;
+  }
+
+  code, .font-mono {
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    text-align: left;
+  }
+}
+
+@layer utilities {
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+}
+
+/* ===== Page Transitions ===== */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered children */
+.animate-stagger > * {
+  opacity: 0;
+  animation: pageEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-stagger > *:nth-child(1) { animation-delay: 0.04s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.16s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.20s; }
+.animate-stagger > *:nth-child(6) { animation-delay: 0.24s; }
+.animate-stagger > *:nth-child(7) { animation-delay: 0.28s; }
+.animate-stagger > *:nth-child(8) { animation-delay: 0.32s; }
+
+/* ===== Card Hover Glow ===== */
+.card-glow {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.card-glow:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 0 24px -4px rgba(212, 160, 23, 0.25), 0 0 48px -8px rgba(212, 160, 23, 0.1);
+}
+
+/* ===== Pulse Button ===== */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(42, 171, 238, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(42, 171, 238, 0);
+  }
+}
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ===== Tap Animation ===== */
+@keyframes tapScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+.animate-tap {
+  animation: tapScale 0.15s ease-out;
+}
+
+/* ===== Shimmer Background ===== */
+@keyframes shimmerMove {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.shimmer-bg {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(212, 160, 23, 0.03) 45%,
+    rgba(212, 160, 23, 0.06) 50%,
+    rgba(212, 160, 23, 0.03) 55%,
+    transparent 60%
+  );
+  animation: shimmerMove 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ===== Gaming Spinner ===== */
+@keyframes spinnerRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spinnerDash {
+  0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+.gaming-spinner circle {
+  animation: spinnerDash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+}
+.gaming-spinner {
+  animation: spinnerRotate 2s linear infinite;
+}
+
+/* ===== Floating Label ===== */
+.float-label {
+  position: relative;
+}
+.float-label input:focus + label,
+.float-label input:not(:placeholder-shown) + label,
+.float-label textarea:focus + label,
+.float-label textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1.65rem) scale(0.85);
+  color: #d4a017;
+  background: #12121a;
+  padding: 0 6px;
+}
+.float-label label {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: right center;
+  z-index: 2;
+}
+[dir="rtl"] .float-label label {
+  right: 1rem;
+  left: auto;
+  transform-origin: right center;
+}
+
+/* ===== Focus Ring ===== */
+.focus-gold:focus {
+  outline: none;
+  border-color: rgba(212, 160, 23, 0.5);
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
+}
+
+/* ===== Keyframes ===== */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Particle Background ===== */
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  25% { transform: translate(30px, -40px) scale(1.1); opacity: 0.5; }
+  50% { transform: translate(-20px, -80px) scale(0.9); opacity: 0.2; }
+  75% { transform: translate(40px, -40px) scale(1.05); opacity: 0.4; }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+  33% { transform: translate(-40px, -60px) scale(1.15); opacity: 0.4; }
+  66% { transform: translate(20px, -30px) scale(0.85); opacity: 0.15; }
+}
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
+  50% { transform: translate(50px, -50px) scale(1.2); opacity: 0.45; }
+}
+.particle-1 { animation: float1 12s ease-in-out infinite; }
+.particle-2 { animation: float2 15s ease-in-out infinite; }
+.particle-3 { animation: float3 10s ease-in-out infinite; }
